@@ -1,7 +1,8 @@
 package com.crud.tasks.domain;
 
 public class Task {
-    private String id;
+    //was String
+    private Long id;
     private String title;
     private String content;
 }
