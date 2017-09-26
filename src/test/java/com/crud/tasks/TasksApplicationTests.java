@@ -4,8 +4,6 @@ import com.crud.tasks.controller.TaskController;
 import com.crud.tasks.controller.TaskNotFoundException;
 import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
-import com.crud.tasks.mapper.TaskMapper;
-import com.crud.tasks.service.DbService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +33,8 @@ public class TasksApplicationTests {
 		controller.createTask(dto1);
 		controller.createTask(dto2);
 
+		Assert.assertEquals(true,controller.getTasks().contains(dto1));
+		Assert.assertEquals(true,controller.getTasks().contains(dto2));
 		Assert.assertEquals("test1",controller.getTask(task1.getId()).getTitle());
 		Assert.assertEquals("test2",controller.getTask(task2.getId()).getTitle());
 
