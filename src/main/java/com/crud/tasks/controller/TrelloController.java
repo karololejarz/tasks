@@ -26,13 +26,12 @@ public class TrelloController {
         //18.4. metoda zwraca List<TrelloBoardDto>
         //return trelloClient.getTrelloBoards();
 
-        //znoszone przez 18.4
+        //18.2-3 znoszone przez 18.4
         List<TrelloBoardDto> trelloBoards = trelloClient.getTrelloBoards();
 
         List<TrelloBoardDto> selected = trelloBoards.stream().filter(b->!b.getId().isEmpty())
                 .filter(b->b.getName().contains("Kodilla"))
                 .collect(Collectors.toList());
-                //18.2.3 .forEach(b -> System.out.println(b.getId() + " " + b.getName()));
 
         selected.forEach(board -> {
             System.out.println(board.getId() + " " + board.getName() + '\n' +"This board contains lists: ");
