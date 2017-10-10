@@ -44,14 +44,10 @@ public class TrelloClient {
     }
 
     public List<TrelloBoardDto> getTrelloBoards() {
-        try {
-            TrelloBoardDto[] boardsResponse = restTemplate.getForObject(trelloBoardsUrl(), TrelloBoardDto[].class);
-            return Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
-        }
-        catch (RestClientException e) {
-            LOGGER.error(e.getMessage(), e);
-            return new ArrayList<>();
-        }
+
+        TrelloBoardDto[] boardsResponse = restTemplate.getForObject(trelloBoardsUrl(), TrelloBoardDto[].class);
+
+        return Arrays.asList(ofNullable(boardsResponse).orElse(new TrelloBoardDto[0]));
     }
 
     public CreatedTrelloCard createNewCard(TrelloCardDto trelloCardDto) {
