@@ -22,19 +22,17 @@ public class EmailScheduler {
     @Scheduled(cron = "0 0 10 * * *" /*fixedDelay = 10000*/)
     public void sendInformationEmail() {
         long size = taskRepository.count();
-        int sizeInt = (int)size;
 
         String messageN = "Current number of tasks in database: " + size;
-        String message0 = "There are no tasks in the database";
         String message1 = "There is only one task in the database";
 
-        switch (sizeInt) {
-            case (0): emailService.send(new Mail(adminConfig.getAdminMail(), adminConfig.getAdminMail(), SUBJECT,
-                    message0));
-            case (1): emailService.send(new Mail(adminConfig.getAdminMail(), adminConfig.getAdminMail(), SUBJECT,
-                    message1));
-            default: emailService.send(new Mail(adminConfig.getAdminMail(), adminConfig.getAdminMail(), SUBJECT,
+        if (size!=1) {
+           emailService.send(new Mail(adminConfig.getAdminMail(), adminConfig.getAdminMail(), SUBJECT,
                 messageN));
+        }
+        else {
+            emailService.send(new Mail(adminConfig.getAdminMail(), adminConfig.getAdminMail(), SUBJECT,
+                    message1));
         }
     }
 }
