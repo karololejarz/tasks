@@ -48,7 +48,7 @@ public class SimpleEmailServiceTest {
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getRecipient());
-        mailMessage.setCc(mail.getCc()); //needed to avoid null vs nothing conflict
+        //mailMessage.setCc(mail.getCc());
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
 
