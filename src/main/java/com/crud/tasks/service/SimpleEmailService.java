@@ -29,14 +29,17 @@ public class SimpleEmailService {
         }
     }
 
-    private SimpleMailMessage createMailMessage(final Mail mail) {
+    protected SimpleMailMessage createMailMessage(final Mail mail) {
+        String getCc = mail.getCc();
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getRecipent());
-        mailMessage.setCc(mail.getCc());
+        mailMessage.setTo(mail.getRecipient());
+
+        if(mail.getCc()!=null) mailMessage.setCc(getCc);
+        else mailMessage.setCc(getCc=null);
+
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
-
         return mailMessage;
     }
 }

@@ -24,13 +24,31 @@ public class SimpleEmailServiceTest {
     private JavaMailSender sender;
 
     @Test
-    public void shouldSend() throws Exception {
+    public void shouldSendCc() throws Exception {
         //Given
         Mail mail = new Mail("test@test.com","test@test.com","Test","TestMessage");
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getRecipent());
+        mailMessage.setTo(mail.getRecipient());
         mailMessage.setCc(mail.getCc());
+        mailMessage.setSubject(mail.getSubject());
+        mailMessage.setText(mail.getMessage());
+
+        //When
+        service.send(mail);
+
+        //Then
+        verify(sender, times(1)).send(mailMessage);
+    }
+
+    @Test
+    public void shouldSendNullCc() throws Exception {
+        //Given
+        Mail mail = new Mail("test@test.com",null,"Test","TestMessage");
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(mail.getRecipient());
+        mailMessage.setCc(mail.getCc()); //needed to avoid null vs nothing conflict
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
 
