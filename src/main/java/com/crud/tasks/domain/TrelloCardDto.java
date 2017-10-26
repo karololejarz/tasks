@@ -13,4 +13,11 @@ public class TrelloCardDto {
     private String pos;
     private String listId;
     private TrelloBadges badge;
+
+    public TrelloCardDto(String name, String description, String pos, String listId) {
+        this.name = name;
+        this.description = description;
+        this.pos = pos;
+        this.listId = listId;
+    }
 }
