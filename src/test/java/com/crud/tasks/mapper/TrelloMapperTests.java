@@ -27,7 +27,7 @@ public class TrelloMapperTests {
         trelloListDtosList.add(list2);
         return trelloListDtosList;
     }
-    //Improving coverage
+
     @Test
     public void shouldMapToTrelloBoards() {
         List<TrelloListDto> list = createTrelloListDtosList();
@@ -41,7 +41,7 @@ public class TrelloMapperTests {
         Assert.assertEquals(2,expected.size());
         Assert.assertEquals("id2",expected.get(1).getId());
     }
-    //Improving coverage
+
     @Test
     public void shouldMapToTrelloBoardDtos() {
         List<TrelloList> list = createTrelloLists();
@@ -55,7 +55,7 @@ public class TrelloMapperTests {
         Assert.assertEquals(2,board1.getLists().size());
         Assert.assertEquals(2,expected.size());
     }
-    //Improving coverage
+
     @Test
     public void shouldMapToCard(){
         TrelloCardDto cardDto = new TrelloCardDto("name","description","pos","listId");
@@ -65,7 +65,7 @@ public class TrelloMapperTests {
         Assert.assertEquals("pos",expected.getPos());
         Assert.assertEquals("listId",expected.getListId());
     }
-    //Improving coverage
+
     @Test
     public void shouldMapToCardDto(){
         TrelloCard card = new TrelloCard("name","description","pos","listId");
