@@ -29,10 +29,4 @@ public class TaskMapper {
                 .collect(Collectors.toList());
     }
 
-    public List<Task> mapToTaskList(final List<TaskDto> taskDtoList) {
-        return taskDtoList.stream().
-                map(t -> mapToTask(t))
-                .collect(Collectors.toList());
-    }
-
 }
