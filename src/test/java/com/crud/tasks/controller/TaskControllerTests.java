@@ -80,7 +80,8 @@ public class TaskControllerTests {
         Task task = new Task(1L, "Title1", "Content1");
         TaskDto taskDto = createTaskDtosList().get(0);
         when(dbService.saveTask(ArgumentMatchers.any(Task.class))).thenReturn(task);
-        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
+        when(taskMapper.mapToTaskDto(ArgumentMatchers.any(Task.class))).thenReturn(taskDto);
+        when(taskMapper.mapToTask(ArgumentMatchers.any(TaskDto.class))).thenReturn(task);
 
         Gson gson = new Gson();
         String jsonContent = gson.toJson(task);
@@ -89,10 +90,8 @@ public class TaskControllerTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
-                .andExpect(jsonPath("$.id", is(1L)))
+                .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.title", is("Title1")))
                 .andExpect(jsonPath("$.content", is("Content1")));
     }
-
-
 }

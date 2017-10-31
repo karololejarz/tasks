@@ -1,6 +1,7 @@
 package com.crud.tasks.validator;
 
 import com.crud.tasks.domain.TrelloBoard;
+import com.crud.tasks.domain.TrelloCard;
 import com.crud.tasks.domain.TrelloList;
 import com.crud.tasks.trello.validator.TrelloValidator;
 import org.junit.Assert;
@@ -26,5 +27,16 @@ public class TrelloValidatorTests {
         boards.add(board3);
         List<TrelloBoard> validated = validator.validateTrelloBoards(boards);
         Assert.assertEquals(2,validated.size());
+    }
+
+    //improving coverage
+    @Test
+    public void shouldValidateCard() {
+        TrelloCard card = new TrelloCard("Name","Desc","Top","1");
+        TrelloCard test1 = new TrelloCard("Test1","Desc","Top","1");
+        TrelloCard test2 = new TrelloCard("Test2","Desc","Top","1");
+        Assert.assertEquals(true,validator.validateCard(card));
+        Assert.assertEquals(false,validator.validateCard(test1));
+        Assert.assertEquals(false,validator.validateCard(test2));
     }
 }
