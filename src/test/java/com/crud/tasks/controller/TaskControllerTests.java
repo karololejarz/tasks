@@ -4,6 +4,7 @@ import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DbService;
+import com.google.gson.Gson;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -22,6 +23,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -56,5 +58,41 @@ public class TaskControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)));
     }
-    //GetTask - Task not found exception using mockMvc
+
+    @Test
+    public void testGetTask() throws Exception {
+        Task task = new Task(1L, "Title1", "Content1");
+        TaskDto taskDto = createTaskDtosList().get(0);
+        //Wants Task to be wrapped in an Optional
+        when(dbService.getTask(ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.ofNullable(task));
+        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
+
+        mockMvc.perform(get("/v1/task/getTask?taskId=1")
+                //.param("taskId", "1") - useful for more parameters
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.title", is("Title1")))
+                .andExpect(jsonPath("$.content", is("Content1")));
+    }
+
+    @Test
+    public void shouldCreateTask() throws Exception {
+        Task task = new Task(1L, "Title1", "Content1");
+        TaskDto taskDto = createTaskDtosList().get(0);
+        when(dbService.saveTask(ArgumentMatchers.any(Task.class))).thenReturn(task);
+        when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
+
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(task);
+
+        mockMvc.perform(post("/v1/task/createTask")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(jsonPath("$.id", is(1L)))
+                .andExpect(jsonPath("$.title", is("Title1")))
+                .andExpect(jsonPath("$.content", is("Content1")));
+    }
+
+
 }
