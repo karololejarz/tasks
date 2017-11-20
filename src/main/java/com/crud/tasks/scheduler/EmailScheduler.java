@@ -18,7 +18,7 @@ public class EmailScheduler {
 
     private static final String SUBJECT = "Tasks: daily email";
 
-    @Scheduled(/*cron = "0 0 10 * * *"*/ fixedDelay = 10000)
+    @Scheduled(cron = "0 0 10 * * *" /*fixedDelay = 10000*/)
     public void sendInformationEmail() {
         emailService.sendDailyTaskAmount(new Mail(adminConfig.getAdminMail(), adminConfig.getAdminMail(),SUBJECT, "Amount of daily tasks:"));
     }

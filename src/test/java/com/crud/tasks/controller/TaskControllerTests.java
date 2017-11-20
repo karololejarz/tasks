@@ -32,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TaskControllerTests {
     @Autowired
     private MockMvc mockMvc;
-    //no facade, mocking beans mentioned in TaskController
     @MockBean
     private DbService dbService;
     @MockBean
@@ -53,7 +52,7 @@ public class TaskControllerTests {
     public void shouldGetTasks() throws Exception {
         List<TaskDto> taskDtos = createTaskDtosList();
         when(taskMapper.mapToTaskDtoList(anyList())).thenReturn(taskDtos);
-        mockMvc.perform(get("/v1/task/getTasks")
+        mockMvc.perform(get("/v1/tasks")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)));
@@ -63,12 +62,10 @@ public class TaskControllerTests {
     public void testGetTask() throws Exception {
         Task task = new Task(1L, "Title1", "Content1");
         TaskDto taskDto = createTaskDtosList().get(0);
-        //Wants Task to be wrapped in an Optional
         when(dbService.getTask(ArgumentMatchers.anyLong())).thenReturn(java.util.Optional.ofNullable(task));
         when(taskMapper.mapToTaskDto(task)).thenReturn(taskDto);
 
-        mockMvc.perform(get("/v1/task/getTask?taskId=1")
-                //.param("taskId", "1") - useful for more parameters
+        mockMvc.perform(get("/v1/tasks/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.title", is("Title1")))
@@ -86,7 +83,7 @@ public class TaskControllerTests {
         Gson gson = new Gson();
         String jsonContent = gson.toJson(task);
 
-        mockMvc.perform(post("/v1/task/createTask")
+        mockMvc.perform(post("/v1/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
                 .content(jsonContent))
